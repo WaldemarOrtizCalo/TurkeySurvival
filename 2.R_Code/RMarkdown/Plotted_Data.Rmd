@@ -1,20 +1,20 @@
-#   Script Details                                                          ####
+---
+title: "Plotted Data"
+author: "Waldemar Ortiz-Calo"
+date: "1/11/2021"
+output: html_document
+---
+```{r,echo=FALSE, message=F,warning=FALSE}
 
-# Author: Waldemar Ortiz-Calo
+# Environment Setup and Data Input
 
-# Date:2020-12-20 
+# Working Directory 
+setwd("D:\\Drive\\Research\\UMontana\\2.INPROGRESS\\2.TurkeyProject\\TurkeySurvival")
 
-# Purpose: 
-
-###############################################################################
-#   Library / Functions / Data                                              ####
-
-##  Library                                                                 ####
+# Library
 library(tidyverse)
 
-##  Functions                                                               ####
-
-##  Data                                                                    ####
+# Data 
 female_annual   <- read_csv("1.Data/Processed/annual_f.csv")
 female_seasonal <- read_csv("1.Data/Processed/seasonal_f.csv")
 female_monthly  <- read_csv("1.Data/Processed/monthly_f.csv")
@@ -28,31 +28,51 @@ male_annual$Age[male_annual$Age == "u"] <- "Unknown"
 male_seasonal$Age[male_seasonal$Age == "u"] <- "Unknown"
 male_monthly$Age[male_monthly$Age == "u"] <- "Unknown"
 
+```
+***
+### **Table of Contents**
 
-###############################################################################
-###############################################################################
-###############################################################################
-#                           Male [Annual]                                   ####
+**1.Male**
 
++ Annual Survival
+
++ Seasonal Survival 
+
++ Monthly Survival
+
+**2.Female**
+
++ Annual Survival
+
++ Seasonal Survival 
+
++ Monthly Survival
+
+***
+
+### **1.Male**
+```{r,echo=F,message=F}
 # Changing the name column to a factor
 male_annual$name <- as.factor(male_annual$name)
 male_annual$Year <- as.factor(male_annual$Year)
 
 # Variable Extraction
 SurvivalProb <- subset(male_annual,male_annual$name == "annual_survival")
+```
+#### **Annual Survival**
 
-##  GGPLOT 1 - Probability of Survival (Adult)                              ####
-
+```{r,echo=F,message=F}
 ggplot(SurvivalProb, aes(Year,value)) +
   geom_point()+
   ggtitle("Survival Probability")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
+```
 
+#### **Seasonal Survival**
 
-###############################################################################
-#                           Male [Seasonal]                                 ####
+```{r,echo=F,message=F}
 
 # Changing the seasonal names
 male_seasonal$name[male_seasonal$name == "seasonal_survival_1"] <- 'seasonal_survival'
@@ -93,7 +113,11 @@ NaturalMortProb   <- subset(male_seasonal,male_seasonal$name == "seasonal_natura
 NaturalSurvProb   <- subset(male_seasonal,male_seasonal$name == "seasonal_natural_survival")
 HarvestProb       <- subset(male_seasonal,male_seasonal$name == "seasonal_harvest")
 
-##  GGPLOT 1  - Probability of Survival                                     ####
+
+```
+
+
+```{r,echo=F,message=F}
 
 ggplot(SurvivalProb, aes(Season,value)) +
   geom_point()+
@@ -102,8 +126,9 @@ ggplot(SurvivalProb, aes(Season,value)) +
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
 
+```
 
-##  GGPLOT 2  - Probability of Mortality                                    ####
+```{r,echo=F,message=F}
 
 ggplot(MortalityProb, aes(Season,value)) +
   geom_point()+
@@ -112,7 +137,9 @@ ggplot(MortalityProb, aes(Season,value)) +
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
 
-##  GGPLOT 3  - Probability of Natural Mortality                            ####
+```
+
+```{r,echo=F,message=F}
 
 ggplot(NaturalMortProb, aes(Season,value)) +
   geom_point()+
@@ -121,7 +148,9 @@ ggplot(NaturalMortProb, aes(Season,value)) +
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
 
-##  GGPLOT 4  - Probability of Natural Survival                             ####
+```
+
+```{r,echo=F,message=F}
 
 ggplot(NaturalSurvProb, aes(Season,value)) +
   geom_point()+
@@ -130,7 +159,9 @@ ggplot(NaturalSurvProb, aes(Season,value)) +
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
 
-##  GGPLOT 5  - Probability of Harvest                                      ####
+```
+
+```{r,echo=F,message=F}
 
 ggplot(HarvestProb, aes(Season,value)) +
   geom_point()+
@@ -138,10 +169,10 @@ ggplot(HarvestProb, aes(Season,value)) +
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
+```
 
-###############################################################################
-#                            Male [Monthly]                                 ####
-
+#### **Monthly Survival**
+```{r,echo=F,message=F}
 # Changing the seasonal names
 male_monthly$name[male_monthly$name == "survivalP_1"] <- 'monthly_survival'
 male_monthly$name[male_monthly$name == "survivalP_2"] <- 'monthly_survival'
@@ -177,48 +208,47 @@ SurvivalProb       <- subset(male_monthly,male_monthly$name == "monthly_survival
 DeathProb           <- subset(male_monthly,male_monthly$name == "monthly_death")
 NaturalMortProb    <- subset(male_monthly,male_monthly$name == "monthly_natural_mortality")
 HarvestProb        <- subset(male_monthly,male_monthly$name == "monthly_harvest")
+```
 
-##  GGPLOT 1 - Probability of Survival                                      ####
-
+```{r,echo=F,message=F}
 ggplot(SurvivalProb, aes(Month,value)) +
   geom_point()+
   ggtitle("Survival Probability")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
+```
 
-##  GGPLOT 2 - Probability of Death                                         ####
-
+```{r,echo=F,message=F}
 ggplot(DeathProb, aes(Month,value)) +
   geom_point()+
   ggtitle("Death Probability")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
+```
 
-##  GGPLOT 3 - Probability of Natural Mortality                             ####
-
+```{r,echo=F,message=F}
 ggplot(NaturalMortProb, aes(Month,value)) +
   geom_point()+
   ggtitle("Natural Mortality Probability")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
+```
 
-##  GGPLOT 4 - Probability of Harvest                                       ####
-
+```{r,echo=F,message=F}
 ggplot(HarvestProb, aes(Month,value)) +
   geom_point()+
   ggtitle("Harvest Probability")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))+
   facet_wrap(~Age)
+```
 
-###############################################################################
-###############################################################################
-###############################################################################
-#                            Female [Annual]                                ####
+### **2.Female**
 
+```{r,echo=F,message=F}
 # Changing the name column to a factor
 female_annual$name <- as.factor(female_annual$name)
 female_annual$Year <- as.factor(female_annual$Year)
@@ -226,27 +256,27 @@ female_annual$Year <- as.factor(female_annual$Year)
 # Variable Extraction
 SurvivalProb_Adult    <- subset(female_annual,female_annual$name == "annual_survival_a")
 SurvivalProb_Juvenile <- subset(female_annual,female_annual$name == "annual_survival_j")
+```
 
-##  GGPLOT 1 - Probability of Survival (Adult)                              ####
-
+#### **Annual Survival**
+```{r,echo=F,message=F}
 ggplot(SurvivalProb_Adult, aes(Year,value)) +
   geom_point()+
   ggtitle("Survival Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-
-##  GGPLOT 2 - Probability of Survival (Juvenile)                           ####
-
+```{r,echo=F,message=F}
 ggplot(SurvivalProb_Juvenile, aes(Year,value)) +
   geom_point()+
   ggtitle("Survival Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-###############################################################################
-#                            Female [Seasonal]                              ####
-
+#### **Seasonal Survival**
+```{r,echo=F,message=F}
 # Changing the name column to a factor
 female_seasonal$name <- as.factor(female_seasonal$name)
 female_seasonal$Season <- as.factor(female_seasonal$Season)
@@ -264,94 +294,97 @@ NaturalSurvProb_Juvenile  <- subset(female_seasonal,female_seasonal$name == "sea
 HarvestProb_Adult         <- subset(female_seasonal,female_seasonal$name == "seasonal_harvestP_a")
 HarvestProb_Juvenile      <- subset(female_seasonal,female_seasonal$name == "seasonal_harvestP_j")
 
-##  GGPLOT 1  - Probability of Survival (Adult)                             ####
+```
 
+```{r,echo=F,message=F}
 ggplot(SurvivalProb_Adult, aes(Season,value)) +
   geom_point()+
   ggtitle("Survival Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-
-##  GGPLOT 2  - Probability of Survival (Juvenile)                          ####
-
+```{r,echo=F,message=F}
 ggplot(SurvivalProb_Juvenile, aes(Season,value)) +
   geom_point()+
   ggtitle("Survival Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
 
-##  GGPLOT 3  - Probability of Mortality (Adult)                            ####
+```
 
+```{r,echo=F,message=F}
 ggplot(MortalityProb_Adult, aes(Season,value)) +
   geom_point()+
   ggtitle("Mortality Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 4  - Probability of Mortality (Juvenile)                         ####
-
+```{r,echo=F,message=F}
 ggplot(MortalityProb_Juvenile, aes(Season,value)) +
   geom_point()+
   ggtitle("Mortality Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
 
-##  GGPLOT 5  - Probability of Natural Mortality (Adult)                    ####
+```
+
+```{r,echo=F,message=F}
 
 ggplot(NaturalMortProb_Adult, aes(Season,value)) +
   geom_point()+
   ggtitle("Natural Mortality Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 6  - Probability of Natural Mortality (Juvenile)                 ####
+```{r,echo=F,message=F}
 
 ggplot(NaturalMortProb_Juvenile, aes(Season,value)) +
   geom_point()+
   ggtitle("Natural Mortality Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 7  - Probability of Natural Survival (Adult)                     ####
-
+```{r,echo=F,message=F}
 ggplot(NaturalSurvProb_Adult, aes(Season,value)) +
   geom_point()+
   ggtitle("Natural Survival Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
 
+```
 
-##  GGPLOT 4 - Probability of Survival (Juvenile)   
-##  GGPLOT 8  - Probability of Natural Survival (Juvenile)                  ####
-
+```{r,echo=F,message=F}
 ggplot(NaturalSurvProb_Juvenile, aes(Season,value)) +
   geom_point()+
   ggtitle("Natural Survival Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-
-##  GGPLOT 9  - Probability of Harvest (Adult)                              ####
-
+```{r,echo=F,message=F}
 ggplot(HarvestProb_Adult, aes(Season,value)) +
   geom_point()+
   ggtitle("Harvest Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 10 - Probability of Harvest (Juvenile)                           ####
-
+```{r,echo=F,message=F}
 ggplot(HarvestProb_Juvenile, aes(Season,value)) +
   geom_point()+
   ggtitle("Harvest Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
 
-###############################################################################
-#                            Female [Monthly]                               ####
+#### **Monthly Survival**
 
+```{r,echo=F,message=F}
 # Changing the name column to a factor
 female_monthly$name <- as.factor(female_monthly$name)
 female_monthly$Month <- as.factor(female_monthly$Month)
@@ -369,69 +402,68 @@ NaturalMortProb_Adult     <- subset(female_monthly,female_monthly$name == "natur
 NaturalMortProb_Juvenile <- subset(female_monthly,female_monthly$name == "naturalMortP_j")
 HarvestProb_Adult         <- subset(female_monthly,female_monthly$name == "harvestP_a")
 HarvestProb_Juvenile     <- subset(female_monthly,female_monthly$name == "harvestP_j")
+```
 
-##  GGPLOT 1 - Probability of Death (Adult)                                 ####
-
+```{r,echo=F,message=F}
 ggplot(DeathProb_Adult, aes(Month,value)) +
   geom_point()+
   ggtitle("Death Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 2 - Probability of Death (Juvenile)                              ####
-
+```{r,echo=F,message=F}
 ggplot(DeathProb_Juvenile, aes(Month,value)) +
   geom_point()+
   ggtitle("Death Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 3 - Probability of Survival (Adult)                              ####
-
+```{r,echo=F,message=F}
 ggplot(SurvivalProb_Adult, aes(Month,value)) +
   geom_point()+
   ggtitle("Survival Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-
-##  GGPLOT 4 - Probability of Survival (Juvenile)                           ####
-
+```{r,echo=F,message=F}
 ggplot(SurvivalProb_Juvenile, aes(Month,value)) +
   geom_point()+
   ggtitle("Survival Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 5 - Probability of Natural Mortality (Adult)                     ####
-
+```{r,echo=F,message=F}
 ggplot(NaturalMortProb_Adult, aes(Month,value)) +
   geom_point()+
   ggtitle("Natural Mortality Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 6 - Probability of Natural Mortality (Juvenile)                  ####
-
+```{r,echo=F,message=F}
 ggplot(NaturalMortProb_Juvenile, aes(Month,value)) +
   geom_point()+
   ggtitle("Natural Mortality Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 7 - Probability of Harvest (Adult)                               ####
-
+```{r,echo=F,message=F}
 ggplot(HarvestProb_Adult, aes(Month,value)) +
   geom_point()+
   ggtitle("Harvest Probability (Adult)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
+```
 
-##  GGPLOT 8 - Probability of Harvest (Juvenile)                            ####
-
+```{r,echo=F,message=F}
 ggplot(HarvestProb_Juvenile, aes(Month,value)) +
   geom_point()+
   ggtitle("Harvest Probability (Juvenile)")+
   ylab("Probability")+
   geom_errorbar(aes(ymin = value - std.dev, ymax = value + std.dev))
-
+```
